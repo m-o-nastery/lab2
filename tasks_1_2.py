@@ -1,5 +1,6 @@
 import csv
 
+
 def row_len(books):
     books.seek(0)
     reader = csv.DictReader(books, delimiter=';')

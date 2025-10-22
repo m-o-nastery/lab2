@@ -1,6 +1,17 @@
 import random
 import csv
 
+
+def get_year(new_date):
+    new_date = new_date.split('.')
+    year = new_date[2]
+    while '  ' in year:
+        year = year.replace('  ', ' ')
+    year = year.split(' ')
+    if year[0] != ' ':
+        return year[0]
+    else:
+        return year[1]
 def read_line(Books):
     twenty_books = []
     for i in range(20):
@@ -9,15 +20,17 @@ def read_line(Books):
 
         for row in range(random.randint(1, 300)):
             fields = next(reader)
-
-        if len(str(fields["Дата поступления"])[6:10]) == 0:
-            twenty_books.append([f"{i + 1}. {fields['Автор (ФИО)']}. {fields['Название']} - дата поступления неизвестна"])
-        elif len(str(fields["Автор (ФИО)"])) == 0:
-            twenty_books.append([f"{i + 1}. Автор неизвестен. {fields['Название']} - {str(fields['Дата поступления'])[6:10]}"])
-        elif len(str(fields["Дата поступления"])[6:10]) == 0 and len(str(fields["Автор (ФИО)"])) == 0:
-            twenty_books.append([f"{i + 1}. Автор неизвестен. {fields['Название']} - дата поступления неизвестна"])
+        date = get_year(fields["Дата поступления"])
+        author = fields['Автор (ФИО)']
+        name = fields['Название']
+        if len(date) == 0:
+            twenty_books.append([f"{i + 1}. {author}. {name} - дата поступления неизвестна."])
+        elif len(author) == 0:
+            twenty_books.append([f"{i + 1}. Автор неизвестен. {name} - {date}."])
+        elif len(date) == 0 and len(author) == 0:
+            twenty_books.append([f"{i + 1}. Автор неизвестен. {name} - дата поступления неизвестна."])
         else:
-            twenty_books.append([f"{i + 1}. {fields['Автор (ФИО)']}. {fields['Название']} - {str(fields['Дата поступления'])[6:10]}"])
+            twenty_books.append([f"{i + 1}. {author}. {name} - {date}."])
     return twenty_books
 
 
